@@ -1,6 +1,5 @@
 generator client {
-  provider = "prisma-client"
-  output   = "../generated/prisma"
+  provider = "prisma-client-js"
 }
 
 datasource db {
@@ -20,11 +19,11 @@ model Movie {
 
   genre Genre @default(DRAMA)
 
-  posterId String @unique @map("poster_id")
+  posterId String? @unique @map("poster_id")
 
-  poster  MoviePoster @relation(fields: [posterId], references: [id])
-  reviews Review[]    @relation("movie_reviews")
-  actors  Actor[]     @relation("movie_actors")
+  poster  MoviePoster? @relation(fields: [posterId], references: [id])
+  reviews Review[]     @relation("movie_reviews")
+  actors  Actor[]      @relation("movie_actors")
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
