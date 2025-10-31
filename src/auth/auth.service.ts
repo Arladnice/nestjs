@@ -4,6 +4,7 @@ import { RegisterRequest } from './dto/register.dto';
 import { hash } from 'argon2';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
+import { JwtPayload } from './interfaces/jwt.interface';
 
 @Injectable()
 export class AuthService {
@@ -46,6 +47,20 @@ export class AuthService {
       },
     });
 
-    return user;
+    return this.generateTokens(user.id);
+  }
+
+  private generateTokens(id: string) {
+    const payload: JwtPayload = { id };
+
+    const accessToken = this.jwtService.sign(payload, {
+      expiresIn: this.JWT_ACCESS_TOKEN_TTL,
+    });
+
+    const refreshToken = this.jwtService.sign(payload, {
+      expiresIn: this.JWT_REFRESH_TOKEN_TTL,
+    });
+
+    return { accessToken, refreshToken };
   }
 }
