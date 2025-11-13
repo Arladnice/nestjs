@@ -2,8 +2,22 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type AuthModel {
+  accessToken: String!
+}
+
+type Mutation {
+  register(data: RegisterInput!): AuthModel!
+}
+
 type Query {
   getUsers: [UserModel!]!
+}
+
+input RegisterInput {
+  email: String!
+  name: String!
+  password: String!
 }
 
 type UserModel {

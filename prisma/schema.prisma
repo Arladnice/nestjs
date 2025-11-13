@@ -22,3 +22,8 @@ model User {
 
   @@map("users")
 }
+
+enum UserRole {
+  USER
+  ADMIN
+}
