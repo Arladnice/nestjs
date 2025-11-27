@@ -113,6 +113,20 @@ export class AuthService {
     }
   }
 
+  async validate(payload: JwtPayload) {
+    const user = await this.prismaService.user.findUnique({
+      where: {
+        id: payload.id,
+      },
+    });
+
+    if (!user) {
+      throw new UnauthorizedException('Пользователь не найден');
+    }
+
+    return user;
+  }
+
   logout(res: Response) {
     this.setCookie(res, 'refreshToken', new Date(0));
 
@@ -151,7 +165,7 @@ export class AuthService {
       domain: this.COOKIE_DOMAIN,
       expires,
       secure: !isDev(this.configService),
-      sameSite: isDev(this.configService) ? 'none' : 'lax',
+      sameSite: 'lax',
     });
   }
 }
